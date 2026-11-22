@@ -1,136 +1,248 @@
 
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Melek 💗</title>
+<title>ACCESS TERMINAL</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* {box-sizing:border-box}
 
 body {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#17002e,#78004e,#ff4b91);
-    color: white;
-    text-align: center;
+ margin:0;
+ min-height:100vh;
+ background:linear-gradient(135deg,#050510,#170026);
+ color:white;
+ font-family:Arial,sans-serif;
+ display:flex;
+ justify-content:center;
+ align-items:center;
 }
 
-.container {
-    width: 90%;
-    max-width: 450px;
-    padding: 35px 22px;
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 25px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 0 40px #ff55aa66;
-    z-index: 2;
+.card {
+ width:90%;
+ max-width:440px;
+ padding:30px;
+ text-align:center;
+ background:#ffffff0c;
+ border:1px solid #8d36ff;
+ border-radius:18px;
+ box-shadow:0 0 35px #8d36ff55;
 }
 
 h1 {
-    font-size: 48px;
-    color: #ffb6d9;
-    text-shadow: 0 0 20px #ff008c;
-    margin-bottom: 20px;
-    animation: pulse 2s infinite;
+ color:#d7a1ff;
+ font-size:25px;
 }
 
-p {
-    font-size: 19px;
-    line-height: 1.7;
-    margin-bottom: 25px;
+.question {
+ margin:25px 0;
+ line-height:1.6;
 }
 
-button {
-    padding: 15px 25px;
-    border: none;
-    border-radius: 30px;
-    background: linear-gradient(90deg,#ff168c,#ff75b7);
-    color: white;
-    font-size: 17px;
-    cursor: pointer;
-    box-shadow: 0 0 20px #ff168c;
+.option {
+ display:block;
+ width:100%;
+ padding:15px;
+ margin:10px 0;
+ color:white;
+ background:#260044;
+ border:1px solid #a855f7;
+ border-radius:10px;
+ cursor:pointer;
+ font-size:16px;
 }
 
-button:hover {
-    transform: scale(1.08);
+.option:hover {
+ background:#7000b5;
 }
 
-#cevap {
-    margin-top: 25px;
-    font-size: 20px;
-    color: #ffd5e8;
+#result {
+ margin-top:20px;
+ color:#d8aaff;
 }
 
-.heart {
-    position: absolute;
-    bottom: -30px;
-    animation: rise 7s linear infinite;
-    opacity: .8;
+#hack {
+ display:none;
+ position:fixed;
+ inset:0;
+ background:#000;
+ z-index:20;
+ overflow:hidden;
+ font-family:monospace;
 }
 
-@keyframes pulse {
-    50% { transform: scale(1.1); }
+#matrix {
+ position:absolute;
+ inset:0;
+ width:100%;
+ height:100%;
+ opacity:.8;
 }
 
-@keyframes rise {
-    to {
-        transform: translateY(-110vh) rotate(360deg);
-        opacity: 0;
-    }
+.terminal {
+ position:absolute;
+ inset:0;
+ padding:25px;
+ pointer-events:none;
+}
+
+.alert {
+ color:#ff2525;
+ font-size:clamp(22px,5vw,35px);
+ text-shadow:0 0 15px red;
+ margin:20px 0;
+}
+
+#logs {
+ color:#00ff41;
+ font-size:13px;
+ line-height:1.8;
+ overflow-wrap:anywhere;
+}
+
+.cursor {
+ display:inline-block;
+ width:9px;
+ height:17px;
+ background:#00ff41;
+ animation:blink .7s infinite;
+}
+
+@keyframes blink {
+ 50% {opacity:0}
+}
+
+.close {
+ position:absolute;
+ bottom:20px;
+ right:20px;
+ z-index:5;
+ background:#111;
+ color:#00ff41;
+ border:1px solid #00ff41;
+ padding:12px;
+ cursor:pointer;
+ pointer-events:auto;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h1>MELEK 💗</h1>
+<div class="card" id="page">
 
-    <p>
-        Bazen bir mesajın cevabını beklemek,
-        saatlerce beklemekten daha uzun geliyor... 🥺
-        <br><br>
-        Sana küçük bir sürpriz hazırladım.
-        Umarım yüzünde bir gülümseme oluşturur. ❤️
-    </p>
+<h1>INCOMING MESSAGE</h1>
 
-    <button onclick="mesaj()">Buraya Tıkla 💌</button>
+<div class="question">
+What was your reason for replying late to a message from a Trabzon native?
+</div>
 
-    <div id="cevap"></div>
+<button class="option" onclick="answer('Sleeping')">A - Sleeping</button>
+<button class="option" onclick="answer('My phone is broken')">B - My phone is broken</button>
+<button class="option" onclick="answer('Cell towers are down')">C - Cell towers are down</button>
+<button class="option" onclick="startHack()">D - None of these</button>
+
+<div id="result"></div>
+
+</div>
+
+<div id="hack">
+
+<canvas id="matrix"></canvas>
+
+<div class="terminal">
+<div class="alert">ACCESS TERMINAL</div>
+<div id="logs"></div>
+<span class="cursor"></span>
+</div>
+
+<button class="close" onclick="stopHack()">EXIT</button>
+
 </div>
 
 <script>
-function mesaj() {
-    document.getElementById("cevap").innerHTML =
-    "Melek, müsait olduğunda bana bir cevap verir misin? ❤️ Seni merak ettim.";
+
+function answer(value) {
+ document.getElementById("result").innerText =
+ "Selected: " + value;
 }
 
-function kalp() {
-    const h = document.createElement("div");
-    h.className = "heart";
-    h.innerHTML = ["💗","💖","💕","✨"][Math.floor(Math.random()*4)];
-    h.style.left = Math.random()*100 + "vw";
-    h.style.fontSize = (15+Math.random()*25)+"px";
-    h.style.animationDuration = (4+Math.random()*5)+"s";
-    document.body.appendChild(h);
+let animation;
+let logTimer;
 
-    setTimeout(() => h.remove(),9000);
+function startHack() {
+ document.getElementById("page").style.display="none";
+ document.getElementById("hack").style.display="block";
+ startMatrix();
+ startLogs();
 }
 
-setInterval(kalp,400);
+function startMatrix() {
+ const canvas=document.getElementById("matrix");
+ const ctx=canvas.getContext("2d");
+
+ canvas.width=window.innerWidth;
+ canvas.height=window.innerHeight;
+
+ const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ{}[]<>/\\";
+ const size=15;
+ const columns=Math.floor(canvas.width/size);
+ const drops=Array(columns).fill(1);
+
+ function draw() {
+   ctx.fillStyle="rgba(0,0,0,0.08)";
+   ctx.fillRect(0,0,canvas.width,canvas.height);
+   ctx.fillStyle="#00ff41";
+   ctx.font=size+"px monospace";
+
+   for(let i=0;i<drops.length;i++) {
+     const char=chars[Math.floor(Math.random()*chars.length)];
+     ctx.fillText(char,i*size,drops[i]*size);
+
+     if(drops[i]*size>canvas.height && Math.random()>.975)
+       drops[i]=0;
+
+     drops[i]++;
+   }
+ }
+
+ animation=setInterval(draw,35);
+}
+
+function startLogs() {
+ const logs=document.getElementById("logs");
+
+ const messages=[
+ "[SYSTEM] Initializing terminal...",
+ "[SYSTEM] Loading visual interface...",
+ "[NETWORK] Connection simulation started...",
+ "[ACCESS] Analyzing fictional response...",
+ "[PROCESS] Running visual sequence...",
+ "[WARNING] RESPONSE DELAY DETECTED",
+ "[SYSTEM] Matrix animation active...",
+ "[STATUS] Simulation running..."
+ ];
+
+ let i=0;
+
+ logTimer=setInterval(()=>{
+   logs.innerHTML+=messages[i%messages.length]+"<br>";
+   i++;
+
+   if(logs.children.length>16)
+     logs.removeChild(logs.firstChild);
+ },500);
+}
+
+function stopHack() {
+ clearInterval(animation);
+ clearInterval(logTimer);
+ document.getElementById("hack").style.display="none";
+ document.getElementById("page").style.display="block";
+}
+
 </script>
-
 </body>
 </html>
-
