@@ -90,7 +90,7 @@ h1 {
     inset: 0;
     padding: 25px;
     pointer-events: none;
-    background: linear-gradient(90deg,#000000aa,transparent);
+    background: linear-gradient(90deg,#00000099,transparent);
 }
 
 .alert {
@@ -116,27 +116,10 @@ h1 {
     animation: blink .7s infinite;
 }
 
-.controls {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    z-index: 5;
-    display: flex;
-    gap: 10px;
-}
-
-.controls button {
-    background: #111;
-    color: #00ff41;
-    border: 1px solid #00ff41;
-    padding: 12px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
 @keyframes blink {
     50% { opacity: 0; }
 }
+
 </style>
 </head>
 
@@ -186,22 +169,11 @@ h1 {
 
     </div>
 
-    <div class="controls">
-        <button onclick="toggleSound()" id="soundButton">
-            SOUND ON
-        </button>
-
-        <button onclick="stopHack()">
-            EXIT
-        </button>
-    </div>
-
 </div>
 
 <script>
 
 let audioContext;
-let soundEnabled = true;
 let animation;
 let logTimer;
 let matrixRunning = false;
@@ -215,18 +187,10 @@ function answer(value) {
 
 function playHackSound() {
 
-    if (!soundEnabled) return;
-
-    if (!audioContext) {
-        audioContext = new (
-            window.AudioContext ||
-            window.webkitAudioContext
-        )();
-    }
-
-    if (audioContext.state === "suspended") {
-        audioContext.resume();
-    }
+    audioContext = new (
+        window.AudioContext ||
+        window.webkitAudioContext
+    )();
 
     function beep(freq, duration, delay, type="sawtooth") {
 
@@ -346,7 +310,7 @@ function startLogs() {
     }, 500);
 }
 
-// START HACKER SCREEN
+// START
 
 function startHack() {
 
@@ -358,49 +322,16 @@ function startHack() {
     startLogs();
 }
 
-// SOUND CONTROL
-
-function toggleSound() {
-
-    soundEnabled = !soundEnabled;
-
-    document.getElementById("soundButton").innerText =
-        soundEnabled ? "SOUND ON" : "SOUND OFF";
-
-    if (!soundEnabled && audioContext) {
-        audioContext.suspend();
-    }
-
-    if (soundEnabled && audioContext) {
-        audioContext.resume();
-    }
-}
-
-// EXIT
-
-function stopHack() {
-
-    matrixRunning = false;
-
-    clearInterval(animation);
-    clearInterval(logTimer);
-
-    if (audioContext) {
-        audioContext.suspend();
-    }
-
-    document.getElementById("hack").style.display = "none";
-    document.getElementById("page").style.display = "block";
-}
-
-// RESIZE
-
 window.addEventListener("resize", () => {
+
     if (matrixRunning) {
+
         const canvas = document.getElementById("matrix");
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
+
 });
 
 </script>
