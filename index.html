@@ -4,127 +4,138 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ACCESS TERMINAL</title>
+<title>Incoming Message</title>
 
 <style>
-* {box-sizing:border-box}
+* {
+    box-sizing: border-box;
+}
 
 body {
- margin:0;
- min-height:100vh;
- background:linear-gradient(135deg,#050510,#170026);
- color:white;
- font-family:Arial,sans-serif;
- display:flex;
- justify-content:center;
- align-items:center;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#050510,#170026);
+    color: white;
 }
 
 .card {
- width:90%;
- max-width:440px;
- padding:30px;
- text-align:center;
- background:#ffffff0c;
- border:1px solid #8d36ff;
- border-radius:18px;
- box-shadow:0 0 35px #8d36ff55;
+    width: 90%;
+    max-width: 440px;
+    padding: 30px;
+    text-align: center;
+    background: #ffffff0c;
+    border: 1px solid #8d36ff;
+    border-radius: 18px;
+    box-shadow: 0 0 35px #8d36ff55;
 }
 
 h1 {
- color:#d7a1ff;
- font-size:25px;
+    color: #d7a1ff;
+    font-size: 25px;
+    text-shadow: 0 0 15px #a000ff;
 }
 
 .question {
- margin:25px 0;
- line-height:1.6;
+    margin: 25px 0;
+    line-height: 1.7;
+    font-size: 17px;
 }
 
 .option {
- display:block;
- width:100%;
- padding:15px;
- margin:10px 0;
- color:white;
- background:#260044;
- border:1px solid #a855f7;
- border-radius:10px;
- cursor:pointer;
- font-size:16px;
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    color: white;
+    background: #260044;
+    border: 1px solid #a855f7;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: .2s;
 }
 
 .option:hover {
- background:#7000b5;
+    background: #7000b5;
+    transform: scale(1.03);
 }
 
 #result {
- margin-top:20px;
- color:#d8aaff;
+    margin-top: 20px;
+    color: #d8aaff;
 }
 
 #hack {
- display:none;
- position:fixed;
- inset:0;
- background:#000;
- z-index:20;
- overflow:hidden;
- font-family:monospace;
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: black;
+    z-index: 20;
+    overflow: hidden;
 }
 
 #matrix {
- position:absolute;
- inset:0;
- width:100%;
- height:100%;
- opacity:.8;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .terminal {
- position:absolute;
- inset:0;
- padding:25px;
- pointer-events:none;
+    position: absolute;
+    inset: 0;
+    padding: 25px;
+    pointer-events: none;
+    background: linear-gradient(90deg,#000000aa,transparent);
 }
 
 .alert {
- color:#ff2525;
- font-size:clamp(22px,5vw,35px);
- text-shadow:0 0 15px red;
- margin:20px 0;
+    color: #ff2525;
+    font-size: clamp(22px,5vw,35px);
+    text-shadow: 0 0 15px red;
+    margin: 20px 0;
+    animation: blink 1s infinite;
 }
 
 #logs {
- color:#00ff41;
- font-size:13px;
- line-height:1.8;
- overflow-wrap:anywhere;
+    color: #00ff41;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
 }
 
 .cursor {
- display:inline-block;
- width:9px;
- height:17px;
- background:#00ff41;
- animation:blink .7s infinite;
+    display: inline-block;
+    width: 9px;
+    height: 17px;
+    background: #00ff41;
+    animation: blink .7s infinite;
+}
+
+.controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 5;
+    display: flex;
+    gap: 10px;
+}
+
+.controls button {
+    background: #111;
+    color: #00ff41;
+    border: 1px solid #00ff41;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 @keyframes blink {
- 50% {opacity:0}
-}
-
-.close {
- position:absolute;
- bottom:20px;
- right:20px;
- z-index:5;
- background:#111;
- color:#00ff41;
- border:1px solid #00ff41;
- padding:12px;
- cursor:pointer;
- pointer-events:auto;
+    50% { opacity: 0; }
 }
 </style>
 </head>
@@ -133,116 +144,266 @@ h1 {
 
 <div class="card" id="page">
 
-<h1>INCOMING MESSAGE</h1>
+    <h1>INCOMING MESSAGE</h1>
 
-<div class="question">
-What was your reason for replying late to a message from a Trabzon native?
-</div>
+    <div class="question">
+        What was your reason for replying late to a message from a Trabzon native?
+    </div>
 
-<button class="option" onclick="answer('Sleeping')">A - Sleeping</button>
-<button class="option" onclick="answer('My phone is broken')">B - My phone is broken</button>
-<button class="option" onclick="answer('Cell towers are down')">C - Cell towers are down</button>
-<button class="option" onclick="startHack()">D - None of these</button>
+    <button class="option" onclick="answer('Sleeping')">
+        A - Sleeping
+    </button>
 
-<div id="result"></div>
+    <button class="option" onclick="answer('My phone is broken')">
+        B - My phone is broken
+    </button>
+
+    <button class="option" onclick="answer('Cell towers are down')">
+        C - Cell towers are down
+    </button>
+
+    <button class="option" onclick="startHack()">
+        D - None of these
+    </button>
+
+    <div id="result"></div>
 
 </div>
 
 <div id="hack">
 
-<canvas id="matrix"></canvas>
+    <canvas id="matrix"></canvas>
 
-<div class="terminal">
-<div class="alert">ACCESS TERMINAL</div>
-<div id="logs"></div>
-<span class="cursor"></span>
-</div>
+    <div class="terminal">
 
-<button class="close" onclick="stopHack()">EXIT</button>
+        <div class="alert">
+            ACCESS TERMINAL
+        </div>
+
+        <div id="logs"></div>
+
+        <span class="cursor"></span>
+
+    </div>
+
+    <div class="controls">
+        <button onclick="toggleSound()" id="soundButton">
+            SOUND ON
+        </button>
+
+        <button onclick="stopHack()">
+            EXIT
+        </button>
+    </div>
 
 </div>
 
 <script>
 
-function answer(value) {
- document.getElementById("result").innerText =
- "Selected: " + value;
-}
-
+let audioContext;
+let soundEnabled = true;
 let animation;
 let logTimer;
+let matrixRunning = false;
 
-function startHack() {
- document.getElementById("page").style.display="none";
- document.getElementById("hack").style.display="block";
- startMatrix();
- startLogs();
+function answer(value) {
+    document.getElementById("result").innerText =
+        "Selected: " + value;
 }
+
+// DIGITAL SOUND EFFECT
+
+function playHackSound() {
+
+    if (!soundEnabled) return;
+
+    if (!audioContext) {
+        audioContext = new (
+            window.AudioContext ||
+            window.webkitAudioContext
+        )();
+    }
+
+    if (audioContext.state === "suspended") {
+        audioContext.resume();
+    }
+
+    function beep(freq, duration, delay, type="sawtooth") {
+
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        const start = audioContext.currentTime + delay;
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, start);
+
+        gain.gain.setValueAtTime(0.0001, start);
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.12, start + 0.02
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.0001, start + duration
+        );
+
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+
+        osc.start(start);
+        osc.stop(start + duration);
+    }
+
+    beep(110, 0.5, 0);
+    beep(880, 0.15, 0.35);
+    beep(440, 0.3, 0.55);
+    beep(1200, 0.12, 0.9);
+    beep(180, 0.6, 1.1);
+}
+
+// MATRIX EFFECT
 
 function startMatrix() {
- const canvas=document.getElementById("matrix");
- const ctx=canvas.getContext("2d");
 
- canvas.width=window.innerWidth;
- canvas.height=window.innerHeight;
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
 
- const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ{}[]<>/\\";
- const size=15;
- const columns=Math.floor(canvas.width/size);
- const drops=Array(columns).fill(1);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
- function draw() {
-   ctx.fillStyle="rgba(0,0,0,0.08)";
-   ctx.fillRect(0,0,canvas.width,canvas.height);
-   ctx.fillStyle="#00ff41";
-   ctx.font=size+"px monospace";
+    const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ{}[]<>/\\";
+    const size = 15;
 
-   for(let i=0;i<drops.length;i++) {
-     const char=chars[Math.floor(Math.random()*chars.length)];
-     ctx.fillText(char,i*size,drops[i]*size);
+    const columns = Math.floor(canvas.width / size);
+    const drops = Array(columns).fill(1);
 
-     if(drops[i]*size>canvas.height && Math.random()>.975)
-       drops[i]=0;
+    matrixRunning = true;
 
-     drops[i]++;
-   }
- }
+    function draw() {
 
- animation=setInterval(draw,35);
+        if (!matrixRunning) return;
+
+        ctx.fillStyle = "rgba(0,0,0,0.08)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#00ff41";
+        ctx.font = size + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+
+            const char = chars[
+                Math.floor(Math.random() * chars.length)
+            ];
+
+            ctx.fillText(char, i * size, drops[i] * size);
+
+            if (
+                drops[i] * size > canvas.height &&
+                Math.random() > 0.975
+            ) {
+                drops[i] = 0;
+            }
+
+            drops[i]++;
+        }
+    }
+
+    animation = setInterval(draw, 35);
 }
+
+// TERMINAL EFFECT
 
 function startLogs() {
- const logs=document.getElementById("logs");
 
- const messages=[
- "[SYSTEM] Initializing terminal...",
- "[SYSTEM] Loading visual interface...",
- "[NETWORK] Connection simulation started...",
- "[ACCESS] Analyzing fictional response...",
- "[PROCESS] Running visual sequence...",
- "[WARNING] RESPONSE DELAY DETECTED",
- "[SYSTEM] Matrix animation active...",
- "[STATUS] Simulation running..."
- ];
+    const logs = document.getElementById("logs");
 
- let i=0;
+    const messages = [
+        "[SYSTEM] Initializing terminal...",
+        "[SYSTEM] Loading visual interface...",
+        "[NETWORK] Connection simulation started...",
+        "[ACCESS] Analyzing fictional response...",
+        "[PROCESS] Running visual sequence...",
+        "[WARNING] RESPONSE DELAY DETECTED",
+        "[SYSTEM] Matrix animation active...",
+        "[STATUS] Simulation running...",
+        "[SYSTEM] Visual effects operational...",
+        "[NOTICE] No device access or data collection."
+    ];
 
- logTimer=setInterval(()=>{
-   logs.innerHTML+=messages[i%messages.length]+"<br>";
-   i++;
+    let i = 0;
 
-   if(logs.children.length>16)
-     logs.removeChild(logs.firstChild);
- },500);
+    logTimer = setInterval(() => {
+
+        logs.innerHTML += messages[i % messages.length] + "<br>";
+
+        i++;
+
+        if (logs.children.length > 16) {
+            logs.removeChild(logs.firstChild);
+        }
+
+    }, 500);
 }
+
+// START HACKER SCREEN
+
+function startHack() {
+
+    document.getElementById("page").style.display = "none";
+    document.getElementById("hack").style.display = "block";
+
+    playHackSound();
+    startMatrix();
+    startLogs();
+}
+
+// SOUND CONTROL
+
+function toggleSound() {
+
+    soundEnabled = !soundEnabled;
+
+    document.getElementById("soundButton").innerText =
+        soundEnabled ? "SOUND ON" : "SOUND OFF";
+
+    if (!soundEnabled && audioContext) {
+        audioContext.suspend();
+    }
+
+    if (soundEnabled && audioContext) {
+        audioContext.resume();
+    }
+}
+
+// EXIT
 
 function stopHack() {
- clearInterval(animation);
- clearInterval(logTimer);
- document.getElementById("hack").style.display="none";
- document.getElementById("page").style.display="block";
+
+    matrixRunning = false;
+
+    clearInterval(animation);
+    clearInterval(logTimer);
+
+    if (audioContext) {
+        audioContext.suspend();
+    }
+
+    document.getElementById("hack").style.display = "none";
+    document.getElementById("page").style.display = "block";
 }
 
+// RESIZE
+
+window.addEventListener("resize", () => {
+    if (matrixRunning) {
+        const canvas = document.getElementById("matrix");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+});
+
 </script>
+
 </body>
 </html>
