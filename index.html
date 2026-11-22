@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Melek 💗</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#17002e,#78004e,#ff4b91);
+    color: white;
+    text-align: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 450px;
+    padding: 35px 22px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 25px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 40px #ff55aa66;
+    z-index: 2;
+}
+
+h1 {
+    font-size: 48px;
+    color: #ffb6d9;
+    text-shadow: 0 0 20px #ff008c;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+
+p {
+    font-size: 19px;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+button {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(90deg,#ff168c,#ff75b7);
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    box-shadow: 0 0 20px #ff168c;
+}
+
+button:hover {
+    transform: scale(1.08);
+}
+
+#cevap {
+    margin-top: 25px;
+    font-size: 20px;
+    color: #ffd5e8;
+}
+
+.heart {
+    position: absolute;
+    bottom: -30px;
+    animation: rise 7s linear infinite;
+    opacity: .8;
+}
+
+@keyframes pulse {
+    50% { transform: scale(1.1); }
+}
+
+@keyframes rise {
+    to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>MELEK 💗</h1>
+
+    <p>
+        Bazen bir mesajın cevabını beklemek,
+        saatlerce beklemekten daha uzun geliyor... 🥺
+        <br><br>
+        Sana küçük bir sürpriz hazırladım.
+        Umarım yüzünde bir gülümseme oluşturur. ❤️
+    </p>
+
+    <button onclick="mesaj()">Buraya Tıkla 💌</button>
+
+    <div id="cevap"></div>
+</div>
+
+<script>
+function mesaj() {
+    document.getElementById("cevap").innerHTML =
+    "Melek, müsait olduğunda bana bir cevap verir misin? ❤️ Seni merak ettim.";
+}
+
+function kalp() {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = ["💗","💖","💕","✨"][Math.floor(Math.random()*4)];
+    h.style.left = Math.random()*100 + "vw";
+    h.style.fontSize = (15+Math.random()*25)+"px";
+    h.style.animationDuration = (4+Math.random()*5)+"s";
+    document.body.appendChild(h);
+
+    setTimeout(() => h.remove(),9000);
+}
+
+setInterval(kalp,400);
+</script>
+
+</body>
+</html>
+
